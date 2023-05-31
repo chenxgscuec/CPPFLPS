@@ -24,4 +24,4 @@ for seq in Seq.parse(seq_file,'fasta'):
     if(i % 1000 == 0):
         print(i)
 filename = 'coding_RNA_sORF.fa'        
-Seq.write(select_seq,filename,'fasta')        
+Seq.write(select_seq,filename,'fasta')

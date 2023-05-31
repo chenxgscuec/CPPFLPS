@@ -10,7 +10,7 @@ from numpy import array
 #import pickle
 import pandas as pd
 import pymrmr
-#import csv
+import csv
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
@@ -40,72 +40,90 @@ def model_performance(predicted_probas,y_pred,y_test):
     metrics = [specificity, recall[1], precision[1], accuracy, fbeta_score[1],auc_final, mcc]
     return metrics
 
-class_sel = 'num16'
-
-dataframe = pd.read_csv('train_'+ class_sel +'.csv',encoding="utf-8")
-
-df_test1 = pd.read_csv('test1_'+ class_sel +'.csv',encoding="utf-8")
-
-df_test2 = pd.read_csv('test2_'+ class_sel +'.csv',encoding="utf-8")
-
-df_test3 = pd.read_csv('test3_'+ class_sel +'.csv',encoding="utf-8")
-
-df_test4 = pd.read_csv('test4_'+ class_sel +'.csv',encoding="utf-8")
-
-feats = pymrmr.mRMR(dataframe, 'MIQ', 3)
 
 
-# 4. train a new model
-XFR_train = np.array(dataframe[feats])
-y_train = np.array(dataframe['class'])
+f = open('result2.csv', 'a', encoding='utf-8', newline='')
 
-X1_test = np.array(df_test1[feats])
-y1_test = np.array(df_test1['class'])
+fea_num = 2
 
-X2_test = np.array(df_test2[feats])
-y2_test = np.array(df_test2['class'])
+for num in range(2,36,2):
+    # class_sel = str(num)
+    print(num)
+    dataframe = pd.read_csv('train_num'+ str(num) +'.csv',encoding="utf-8")
 
-X3_test = np.array(df_test3[feats])
-y3_test = np.array(df_test3['class'])
+    df_test1 = pd.read_csv('test1_num'+ str(num) +'.csv',encoding="utf-8")
 
-X4_test = np.array(df_test4[feats])
-y4_test = np.array(df_test4['class'])
+    df_test2 = pd.read_csv('test2_num'+ str(num) +'.csv',encoding="utf-8")
+
+    df_test3 = pd.read_csv('test3_num'+ str(num) +'.csv',encoding="utf-8")
+
+    df_test4 = pd.read_csv('test4_num'+ str(num) +'.csv',encoding="utf-8")
+
+    feats = pymrmr.mRMR(dataframe, 'MIQ', fea_num)
+
+    # 4. train a new model
+    XFR_train = np.array(dataframe[feats])
+    y_train = np.array(dataframe['class'])
+
+    X1_test = np.array(df_test1[feats])
+    y1_test = np.array(df_test1['class'])
+
+    X2_test = np.array(df_test2[feats])
+    y2_test = np.array(df_test2['class'])
+
+    X3_test = np.array(df_test3[feats])
+    y3_test = np.array(df_test3['class'])
+
+    X4_test = np.array(df_test4[feats])
+    y4_test = np.array(df_test4['class'])
 
 
-#clf = svm.SVC(probability = True, random_state=0)
-#clf = MLPClassifier(random_state=0)
-#clf = DecisionTreeClassifier(random_state=0)
-#clf = RandomForestClassifier(random_state=0)
-#clf = ExtraTreesClassifier(random_state=0)
-clf = XGBClassifier(random_state=0)
+    #clf = svm.SVC(probability = True, random_state=0)
+    #clf = MLPClassifier(random_state=0)
+    #clf = DecisionTreeClassifier(random_state=0)
+    #clf = RandomForestClassifier(random_state=0)
+    #clf = ExtraTreesClassifier(random_state=0)
+    clf = XGBClassifier(random_state=0)#, use_label_encoder=False)
 
-classifier = clf.fit(XFR_train, y_train)
+    classifier = clf.fit(XFR_train, y_train)
 
-# 5. evaluation
-y_pred = classifier.predict(X1_test)
-predicted_probas = classifier.predict_proba(X1_test)[:, 1]
-metrics1 = model_performance(predicted_probas,y_pred,y1_test)
-print(metrics1)
+    # 5. evaluation
+    y_pred = classifier.predict(X1_test)
+    predicted_probas = classifier.predict_proba(X1_test)[:, 1]
+    metrics1 = model_performance(predicted_probas,y_pred,y1_test)
+    print(metrics1)
 
-y_pred = classifier.predict(X2_test)
-predicted_probas = classifier.predict_proba(X2_test)[:, 1]
-metrics2 = model_performance(predicted_probas,y_pred,y2_test)
-print(metrics2)
+    y_pred = classifier.predict(X2_test)
+    predicted_probas = classifier.predict_proba(X2_test)[:, 1]
+    metrics2 = model_performance(predicted_probas,y_pred,y2_test)
+    print(metrics2)
 
-y_pred = classifier.predict(X3_test)
-predicted_probas = classifier.predict_proba(X3_test)[:, 1]
-metrics3 = model_performance(predicted_probas,y_pred,y3_test)
-print(metrics3)
+    y_pred = classifier.predict(X3_test)
+    predicted_probas = classifier.predict_proba(X3_test)[:, 1]
+    metrics3 = model_performance(predicted_probas,y_pred,y3_test)
+    print(metrics3)
 
-y_pred = classifier.predict(X4_test)
-predicted_probas = classifier.predict_proba(X4_test)[:, 1]
-metrics4 = model_performance(predicted_probas,y_pred,y4_test)
-print(metrics4)
+    y_pred = classifier.predict(X4_test)
+    predicted_probas = classifier.predict_proba(X4_test)[:, 1]
+    metrics4 = model_performance(predicted_probas,y_pred,y4_test)
+    print(metrics4)
 
-#f = open('result.csv', 'a', encoding='utf-8', newline='')
-#wr = csv.writer(f)
-#wr.writerow([metrics1])
-#wr.writerow([metrics2])
-#wr.writerow([metrics3])
-#wr.writerow([metrics4])
-#f.close()
+    # best_metrics1 = (metrics1[-1] + metrics2[-1] + metrics3[-1] + metrics4[-1]) / 4
+    # best_metrics2 = (metrics1[-1] + metrics3[-1])*0.5*0.4 + (metrics2[-1] + metrics4[-1])*0.5*0.6
+    best_metrics3 = (metrics1[-1] + metrics3[-1])*0.5*0.3 + (metrics2[-1] + metrics4[-1])*0.5*0.7
+    # best_metrics4 = (metrics1[-1] + metrics3[-1]) * 0.5 * 0.2 + (metrics2[-1] + metrics4[-1]) * 0.5 * 0.8
+    # best_metrics5 = (metrics1[-1] + metrics3[-1]) * 0.5 * 0.1 + (metrics2[-1] + metrics4[-1]) * 0.5 * 0.9
+
+    wr = csv.writer(f)
+    wr.writerow([num])
+    # wr.writerow([best_metrics1])
+    # wr.writerow([best_metrics2])
+    wr.writerow([best_metrics3])
+    # wr.writerow([best_metrics4])
+    # wr.writerow([best_metrics5])
+    wr.writerow([metrics1])
+    wr.writerow([metrics2])
+    wr.writerow([metrics3])
+    wr.writerow([metrics4])
+
+f.close()

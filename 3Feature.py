@@ -81,7 +81,7 @@ def save_results(results_file,metrics,time):
             op.write(str(metrics[0])+"\t"+str(metrics[1])+"\t"+str(metrics[2])+"\t"+str(metrics[3])+"\t"+str(metrics[4])+"\t"+str(metrics[5])+"\t"+str(metrics[6])+"\t"+str(time)+"\n")
 
 X_pos,len1 = output_feature(train_pcts)
-X_neg,len2 = output_feature(train_lncRNA)	
+X_neg,len2 = output_feature(train_lncRNA)
 
 data = {'X_pos':X_pos, 'X_neg':X_neg}
 save_path = 'datatrain.pkl'
@@ -112,7 +112,7 @@ pickle.dump(data,open(save_path, 'wb'))
 
 X_pos,len1 = output_feature(test_4_pcts)
 X_neg,len2 = output_feature(test_4_lncRNA)
-            
+
 data = {'X_pos':X_pos, 'X_neg':X_neg}
 save_path = 'datatest4.pkl'
 pickle.dump(data,open(save_path, 'wb'))

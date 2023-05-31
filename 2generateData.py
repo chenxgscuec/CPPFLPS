@@ -8,6 +8,7 @@ import random
 from Bio import SeqIO
 import Bio.SeqIO as Seq
 
+seed = 0
 max_times = 50
 sorf_file = 'coding_RNA_sORF.fa'
 p_arr = [0.001, 0.002, 0.003, 0.004, 0.005, 0.006]   
@@ -111,7 +112,7 @@ def convert_str_delete(seq_one,max_len):
 
 
 for p_id in range(len(p_arr)):
-    random.seed(0)
+    random.seed(seed)
     select_seq = []
     i = 0
     for p_num in range(40):
@@ -129,7 +130,7 @@ for p_id in range(len(p_arr)):
     
    
 for p_id in range(len(p_arr)):
-    random.seed(0) 
+    random.seed(seed)
     select_seq = []
     i = 0
     for p_num in range(40):
@@ -147,7 +148,7 @@ for p_id in range(len(p_arr)):
     
    
 for p_id in range(len(p_arr)):
-    random.seed(0) 
+    random.seed(seed)
     select_seq = []
     i = 0
     for p_num in range(40):
@@ -165,7 +166,7 @@ for p_id in range(len(p_arr)):
     
 
 for p_id in range(len(len_arr)):
-    random.seed(0)
+    random.seed(seed)
     select_seq = []
     i = 0
     for p_num in range(40):
@@ -183,7 +184,7 @@ for p_id in range(len(len_arr)):
     
 
 for p_id in range(len(len_arr)):
-    random.seed(0)
+    random.seed(seed)
     select_seq = []
     i = 0
     for p_num in range(40):
@@ -201,7 +202,7 @@ for p_id in range(len(len_arr)):
 
 
 for p_id in range(len(len_arr)):
-    random.seed(0)
+    random.seed(seed)
     select_seq = []
     i = 0
     for p_num in range(40):
